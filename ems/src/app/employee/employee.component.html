@@ -1,0 +1,249 @@
+<div class="bk">
+
+
+    <!-- Second navbar for sign in -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-2">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">EMS | Employee Management System</a>
+          </div>
+      
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="navbar-collapse-2">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Services</a></li>
+              <li>
+                <a class="btn btn-default btn-outline btn-circle disabled"  data-toggle="collapse" href="#nav-collapse2" 
+                aria-expanded="false" aria-controls="nav-collapse2">Sign in</a>
+              </li>
+            </ul>
+            <div class="collapse nav navbar-nav nav-collapse" id="nav-collapse2">
+              <form class="navbar-form navbar-right form-inline" role="form">
+                <div class="form-group">
+                  <label class="sr-only" for="Email">Email</label>
+                  <input type="email" class="form-control" id="Email" placeholder="Email" autofocus required />
+                </div>
+                <div class="form-group">
+                  <label class="sr-only" for="Password">Password</label>
+                  <input type="password" class="form-control" id="Password" placeholder="Password" required />
+                </div>
+                
+              </form>
+            </div>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+      </nav><!-- /.navbar -->
+
+
+
+
+
+<section id="bdy">
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form #employeeForm="ngForm" (ngSubmit)="onSubmit(employeeForm)">
+        <div class="form-group">
+          
+          <input type="hidden" name="_id" #_id="ngModel" [ngModel]="editEmployee._id">
+          <label>ID:*</label>
+          <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+          <input type="number" class="form-control" name="id"
+          [(ngModel)]="editEmployee.id" 
+          placeholder="eg: 116" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Name:</label>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="text" class="form-control" name="name" 
+          [(ngModel)]="editEmployee.name" 
+          placeholder="full name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Position:</label>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <select class="form-control" name="position"
+          (change)="setPosition($event)">
+          <option [selected]="editEmployee.position=='none'">----</option>
+            <option [selected]="editEmployee.position=='CEO'">CEO</option>
+            <option [selected]="editEmployee.position=='Manager'">Manager</option>
+            <option [selected]="editEmployee.position=='HR'">HR</option>
+            <option [selected]="editEmployee.position=='Developer'">Developer</option>
+            <option [selected]="editEmployee.position=='Designer'">Designer</option>
+            <option [selected]="editEmployee.position=='Others'">Others</option>
+          </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Office:</label>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+          <input type="text" class="form-control" name="office" 
+          [(ngModel)]="editEmployee.office">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Salary:</label>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-usd"></i></span>
+          <input type="number" class="form-control" name="salary" 
+          [(ngModel)]="editEmployee.salary">
+          </div>
+        </div>
+        <div class="form-group">
+        <button type="button" class="btn btn-primary btn-circle" 
+        (click)="resetForm(employeeForm)">Reset</button>
+        <button type="button" class="btn btn-info btn-circle" 
+        (click)="onSubmit(employeeForm)" [disabled]="!employeeForm.valid">Submit</button>
+        </div>
+
+      </form>
+    </div>
+    <!-- table tab -->
+    <div class="col-md-6">
+      <table class="table table-hover table-responsive">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Office</th>
+            <th>Salary</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emp of employeeService.employees">
+            <td>{{ emp.id }} </td>
+            <td>{{ emp.name }}</td>
+            <td>{{ emp.position }}</td>
+            <td>{{ emp.office }}</td>
+            <td>{{ emp.salary }}</td>
+            <td>
+                <button type="button" class="btn btn-default btn-circle btn-lg" (click)="onEdit(emp)">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                  </button>
+              </td>
+            <td>
+                <button type="button" class="btn btn-default btn-circle btn-lg" (click)="onDelete(emp._id,employeeForm)">
+                    <i class="glyphicon glyphicon-trash"></i>
+                  </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+  </div>
+</div>
+</section>
+
+<section id="bdy2">
+<div class="row userdetail">
+  <div class="col-md-3" *ngFor="let emp of employeeService.employees">
+    <div class="thumbnail">
+      <div class="caption">
+        <h3>{{emp.name}}</h3>
+        <div class="card hovercard">
+          <div class="cardheader">
+
+          </div>
+          <div class="avatar">
+              <img alt="" src="https://image.freepik.com/free-icon/businessman_318-72886.jpg">
+          </div>
+          <div class="info">
+              <div class="title">
+                  {{emp.name}}
+              </div>
+              <div class="desc">{{emp.id}}</div>
+              <div class="desc">{{emp.position}}</div>
+              <div class="desc">{{emp.office}}</div>
+              <div class="desc">{{emp.salary}}</div>
+          </div>
+          <div class="bottom">
+            <button type="button" class="btn btn-primary btn-circle btn-lg" (click)="onEdit(emp)">
+              <i class="glyphicon glyphicon-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-circle btn-lg" (click)="onDelete(emp._id,employeeForm)">
+              <i class="glyphicon glyphicon-trash"></i>
+            </button>
+          </div>
+      </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </section>
+
+
+    <section id="footer">
+        <div class="container">
+          <div class="row text-center text-xs-center text-sm-left text-md-left">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <h5>EMS links</h5>
+              <ul class="list-unstyled quick-links">
+                <li><a href=""><i class="fa fa-angle-double-right"></i>Home</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>About</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>Get Started</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>Videos</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <h5>EMS links</h5>
+              <ul class="list-unstyled quick-links">
+                <li><a href=""><i class="fa fa-angle-double-right"></i>Home</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>About</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>Get Started</a></li>
+                <li><a href=""><i class="fa fa-angle-double-right"></i>Videos</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <h5>EMS links</h5>
+              <ul class="list-unstyled quick-links">
+                <li><a href="#"><i class="fa fa-angle-double-right"></i>Home</a></li>
+                <li><a href="#"><i class="fa fa-angle-double-right"></i>About</a></li>
+                <li><a href="#"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+                <li><a href="#"><i class="fa fa-angle-double-right"></i>Get Started</a></li>
+                <li><a href="#" title="Design and developed by"><i class="fa fa-angle-double-right"></i>Imprint</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+              <ul class="list-unstyled list-inline social text-center">
+                <li class="list-inline-item"><a href="https://www.linkedin.com/in/pawanbora/"><i class="fa fa-linkedin"></i></a></li>
+                <li class="list-inline-item"><a href="https://twitter.com/Pawanbora"><i class="fa fa-twitter"></i></a></li>
+                <li class="list-inline-item"><a href="pawanbora@ymail.com" target="_blank"><i class="fa fa-envelope"></i></a></li>
+              </ul>
+            </div>
+            <hr>
+          </div>	
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+              <p><u><a href="#">VenturePact LLC</a></u> Jalandhar, India</p>
+              <p class="h6">&copy; All right Reversed.<a class="text-green ml-2" href="#" target="_blank">Pawan Jyoti Bora</a></p>
+            </div>
+            <hr>
+          </div>	
+        </div>
+      </section>
+    </div> <!-- bk for background end -->
+
+
